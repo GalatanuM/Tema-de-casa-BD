@@ -20,7 +20,7 @@ class MainWindow(QMainWindow):
         self.current_user_id = None  # Initialize the current_user_id attribute
 
         # Connect signals to slots or add additional setup logic here
-        self.ui.pushButton.clicked.connect(self.register_user)
+        self.ui.pushButton.clicked.connect(self.registerButtonClicked)
         self.ui.pushButton_2.clicked.connect(self.loginButtonClicked)
         self.ui.pushButton_3.clicked.connect(self.checkAvailabilityButtonClicked)
         self.ui.pushButton_4.clicked.connect(self.reserveParkingButtonClicked)
@@ -28,6 +28,8 @@ class MainWindow(QMainWindow):
         self.ui.pushButton_6.clicked.connect(self.deleteReservation)
         self.ui.pushButton_7.clicked.connect(self.logoutButtonClicked)
         self.ui.pushButton_8.clicked.connect(self.myReservationsButtonClicked)
+        self.ui.pushButton_9.clicked.connect(self.register_user)
+        self.ui.pushButton_10.clicked.connect(self.goBackFromRegister)
 
     def loginButtonClicked(self):
         username = self.ui.lineEdit_2.text()
@@ -112,30 +114,83 @@ class MainWindow(QMainWindow):
 
         return user_id
 
+    def registerButtonClicked(self):
+        self.ui.stackedWidget.setCurrentIndex(3)
+
+    def goBackFromRegister(self):
+        self.ui.stackedWidget.setCurrentIndex(0)
+
     def register_user(self):
-        conn = sqlite3.connect("parking.db")
-        cursor = conn.cursor()
-        username = self.ui.lineEdit_2.text()
+        # Retrieve information from page 4
+        first_name = self.ui.lineEdit_3.text()
+        last_name = self.ui.lineEdit_4.text()
+        email_address = self.ui.lineEdit_5.text()
+        username = self.ui.lineEdit_6.text()
+        password = self.ui.lineEdit_7.text()
+        confirm_password = self.ui.lineEdit_8.text()
 
-        # Hash the entered password before storing
-        hashed_password = self.hash_password(self.ui.lineEdit.text())
-
-        if hashed_password is None or not hashed_password.strip():
+        # Check if the password is not null
+        if not password:
             QMessageBox.warning(self, "Registration Failed", "Password cannot be blank.")
-            conn.close()
             return
 
-        try:
-            # Insert the new user into the 'users' table with hashed password
-            cursor.execute("INSERT INTO users (username, password) VALUES (?, ?)", (username, hashed_password))
-            conn.commit()
-            QMessageBox.information(self, "Registration", "Registration successful. You can now log in.")
-        except sqlite3.IntegrityError:
-            QMessageBox.warning(self, "Registration Failed", "Username already exists. Please choose another.")
-            self.ui.lineEdit_2.clear()
-            self.ui.lineEdit.clear()
+        # Check if the password and confirm password fields match
+        if password != confirm_password:
+            QMessageBox.warning(self, "Registration Failed", "Password and confirm password do not match.")
+            return
 
-        conn.close()
+        # Hash the entered password before storing
+        hashed_password = self.hash_password(password)
+
+        if hashed_password is None:
+            # Handle the case where password hashing fails
+            QMessageBox.warning(self, "Registration Failed", "Password hashing failed.")
+            return
+
+        # Connect to the database
+        conn = sqlite3.connect("parking.db")
+        cursor = conn.cursor()
+
+        try:
+            # Insert user details into 'user_details' table
+            cursor.execute("INSERT INTO user_details (first_name, last_name, email_address) VALUES (?, ?, ?)",
+                           (first_name, last_name, email_address))
+            # Retrieve the user_id of the newly inserted user_details
+            user_id = cursor.lastrowid
+
+            # Insert login credentials into 'users' table with hashed password
+            cursor.execute("INSERT INTO users (id, username, password) VALUES (?, ?, ?)",
+                           (user_id, username, hashed_password))
+
+            # Commit the transaction
+            conn.commit()
+
+            # Inform the user about successful registration
+            QMessageBox.information(self, "Registration", "Registration successful. You can now log in.")
+
+            self.ui.lineEdit_3.clear()
+            self.ui.lineEdit_4.clear()
+            self.ui.lineEdit_5.clear()
+            self.ui.lineEdit_6.clear()
+            self.ui.lineEdit_7.clear()
+            self.ui.lineEdit_8.clear()
+
+            # Switch to the first page
+            self.ui.stackedWidget.setCurrentIndex(0)
+
+        except sqlite3.IntegrityError as e:
+            # Handle integrity errors (e.g., username already exists)
+            QMessageBox.warning(self, "Registration Failed", f"Registration failed. {str(e)}")
+            self.ui.lineEdit_5.clear()
+            self.ui.lineEdit_6.clear()
+
+        except Exception as e:
+            # Handle other exceptions
+            QMessageBox.critical(self, "Error", f"An error occurred: {str(e)}")
+
+        finally:
+            # Close the database connection
+            conn.close()
 
     def checkAvailabilityButtonClicked(self):
         # Get the selected check-in and check-out date and time
@@ -211,17 +266,6 @@ class MainWindow(QMainWindow):
                         INSERT INTO reservations (user_id, parking_number, checkin_date, checkin_hour, checkout_date, checkout_hour)
                         VALUES (?, ?, ?, ?, ?, ?)
                     """, (user_id, parking_spot, checkin_date, checkin_hour, checkout_date, checkout_hour))
-
-                # Get the current date and time for the history entry
-
-                reservation_date_and_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
-                # Insert the reservation into the 'history' table
-                cursor.execute("""
-                                        INSERT INTO history (reservation_date_and_time, user_id, check_in_date, check_in_hour, check_out_date, check_out_hour)
-                                        VALUES (?, ?, ?, ?, ?, ?)
-                                    """, (
-                reservation_date_and_time, user_id, checkin_date, checkin_hour, checkout_date, checkout_hour))
 
                 # Commit the transaction
                 conn.execute("COMMIT")
@@ -356,21 +400,11 @@ if __name__ == "__main__":
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 first_name TEXT NOT NULL,
                 last_name TEXT NOT NULL,
-                email_address TEXT NOT NULL
+                email_address TEXT NOT NULL,
+                FOREIGN KEY (id) references users(id)
             )
         """)
 
-    cursor.execute("""
-            CREATE TABLE IF NOT EXISTS history (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                reservation_date_and_time DATETIME,
-                user_id INTEGER,
-                check_in_date DATE,
-                check_in_hour TIME,
-                check_out_date DATE,
-                check_out_hour TIME
-            )
-        """)
 
     # Check if the 'parking' table exists
     cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='parking'")
@@ -463,6 +497,36 @@ if __name__ == "__main__":
             SELECT RAISE(FAIL, 'Overlapping reservations are not allowed');
         END;
     """)
+
+    cursor.execute("""
+        CREATE TRIGGER IF NOT EXISTS check_email_structure
+        BEFORE INSERT ON user_details
+        FOR EACH ROW
+        WHEN NEW.email_address NOT LIKE '%_@%_.__%'
+        BEGIN
+            SELECT RAISE(FAIL, 'Invalid email address structure');
+        END;
+    """)
+
+    cursor.execute("""
+        CREATE TRIGGER IF NOT EXISTS check_username_uniqueness
+        BEFORE INSERT ON users
+        FOR EACH ROW
+        WHEN (SELECT COUNT(*) FROM users WHERE username = NEW.username) > 0
+        BEGIN
+            SELECT RAISE(FAIL, 'Username must be unique');
+        END;
+    """)
+
+    cursor.execute("""
+            CREATE TRIGGER IF NOT EXISTS check_email_uniqueness
+            BEFORE INSERT ON user_details
+            FOR EACH ROW
+            WHEN (SELECT COUNT(*) FROM user_details WHERE email_address = NEW.email_address) > 0
+            BEGIN
+                SELECT RAISE(FAIL, 'Email address is already registered');
+            END;
+        """)
 
     conn.commit()
     conn.close()

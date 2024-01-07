@@ -24,7 +24,7 @@ class Ui_mainWindow(object):
     def setupUi(self, mainWindow):
         if not mainWindow.objectName():
             mainWindow.setObjectName(u"mainWindow")
-        mainWindow.resize(866, 346)
+        mainWindow.resize(866, 340)
         self.centralwidget = QWidget(mainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.stackedWidget = QStackedWidget(self.centralwidget)
@@ -83,10 +83,10 @@ class Ui_mainWindow(object):
         self.stackedWidget.addWidget(self.page)
         self.page_2 = QWidget()
         self.page_2.setObjectName(u"page_2")
-        self.widget = QWidget(self.page_2)
-        self.widget.setObjectName(u"widget")
-        self.widget.setGeometry(QRect(1, 1, 840, 286))
-        self.horizontalLayout_2 = QHBoxLayout(self.widget)
+        self.layoutWidget1 = QWidget(self.page_2)
+        self.layoutWidget1.setObjectName(u"layoutWidget1")
+        self.layoutWidget1.setGeometry(QRect(1, 1, 840, 286))
+        self.horizontalLayout_2 = QHBoxLayout(self.layoutWidget1)
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
         self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_7 = QVBoxLayout()
@@ -95,24 +95,24 @@ class Ui_mainWindow(object):
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.verticalLayout_4 = QVBoxLayout()
         self.verticalLayout_4.setObjectName(u"verticalLayout_4")
-        self.label_3 = QLabel(self.widget)
+        self.label_3 = QLabel(self.layoutWidget1)
         self.label_3.setObjectName(u"label_3")
         self.label_3.setAlignment(Qt.AlignCenter)
 
         self.verticalLayout_4.addWidget(self.label_3)
 
-        self.calendarWidget = QCalendarWidget(self.widget)
+        self.calendarWidget = QCalendarWidget(self.layoutWidget1)
         self.calendarWidget.setObjectName(u"calendarWidget")
 
         self.verticalLayout_4.addWidget(self.calendarWidget)
 
-        self.label_5 = QLabel(self.widget)
+        self.label_5 = QLabel(self.layoutWidget1)
         self.label_5.setObjectName(u"label_5")
         self.label_5.setAlignment(Qt.AlignCenter)
 
         self.verticalLayout_4.addWidget(self.label_5)
 
-        self.timeEdit = QTimeEdit(self.widget)
+        self.timeEdit = QTimeEdit(self.layoutWidget1)
         self.timeEdit.setObjectName(u"timeEdit")
 
         self.verticalLayout_4.addWidget(self.timeEdit)
@@ -122,24 +122,24 @@ class Ui_mainWindow(object):
 
         self.verticalLayout_3 = QVBoxLayout()
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
-        self.label_4 = QLabel(self.widget)
+        self.label_4 = QLabel(self.layoutWidget1)
         self.label_4.setObjectName(u"label_4")
         self.label_4.setAlignment(Qt.AlignCenter)
 
         self.verticalLayout_3.addWidget(self.label_4)
 
-        self.calendarWidget_2 = QCalendarWidget(self.widget)
+        self.calendarWidget_2 = QCalendarWidget(self.layoutWidget1)
         self.calendarWidget_2.setObjectName(u"calendarWidget_2")
 
         self.verticalLayout_3.addWidget(self.calendarWidget_2)
 
-        self.label_6 = QLabel(self.widget)
+        self.label_6 = QLabel(self.layoutWidget1)
         self.label_6.setObjectName(u"label_6")
         self.label_6.setAlignment(Qt.AlignCenter)
 
         self.verticalLayout_3.addWidget(self.label_6)
 
-        self.timeEdit_2 = QTimeEdit(self.widget)
+        self.timeEdit_2 = QTimeEdit(self.layoutWidget1)
         self.timeEdit_2.setObjectName(u"timeEdit_2")
 
         self.verticalLayout_3.addWidget(self.timeEdit_2)
@@ -150,7 +150,7 @@ class Ui_mainWindow(object):
 
         self.verticalLayout_7.addLayout(self.horizontalLayout)
 
-        self.pushButton_3 = QPushButton(self.widget)
+        self.pushButton_3 = QPushButton(self.layoutWidget1)
         self.pushButton_3.setObjectName(u"pushButton_3")
 
         self.verticalLayout_7.addWidget(self.pushButton_3)
@@ -160,22 +160,22 @@ class Ui_mainWindow(object):
 
         self.verticalLayout_2 = QVBoxLayout()
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
-        self.pushButton_7 = QPushButton(self.widget)
+        self.pushButton_7 = QPushButton(self.layoutWidget1)
         self.pushButton_7.setObjectName(u"pushButton_7")
 
         self.verticalLayout_2.addWidget(self.pushButton_7)
 
-        self.listWidget = QListWidget(self.widget)
+        self.listWidget = QListWidget(self.layoutWidget1)
         self.listWidget.setObjectName(u"listWidget")
 
         self.verticalLayout_2.addWidget(self.listWidget)
 
-        self.pushButton_4 = QPushButton(self.widget)
+        self.pushButton_4 = QPushButton(self.layoutWidget1)
         self.pushButton_4.setObjectName(u"pushButton_4")
 
         self.verticalLayout_2.addWidget(self.pushButton_4)
 
-        self.pushButton_8 = QPushButton(self.widget)
+        self.pushButton_8 = QPushButton(self.layoutWidget1)
         self.pushButton_8.setObjectName(u"pushButton_8")
 
         self.verticalLayout_2.addWidget(self.pushButton_8)
@@ -186,31 +186,31 @@ class Ui_mainWindow(object):
         self.stackedWidget.addWidget(self.page_2)
         self.page_3 = QWidget()
         self.page_3.setObjectName(u"page_3")
-        self.layoutWidget1 = QWidget(self.page_3)
-        self.layoutWidget1.setObjectName(u"layoutWidget1")
-        self.layoutWidget1.setGeometry(QRect(300, 10, 258, 248))
-        self.verticalLayout_6 = QVBoxLayout(self.layoutWidget1)
+        self.layoutWidget2 = QWidget(self.page_3)
+        self.layoutWidget2.setObjectName(u"layoutWidget2")
+        self.layoutWidget2.setGeometry(QRect(270, 10, 320, 250))
+        self.verticalLayout_6 = QVBoxLayout(self.layoutWidget2)
         self.verticalLayout_6.setObjectName(u"verticalLayout_6")
         self.verticalLayout_6.setContentsMargins(0, 0, 0, 0)
-        self.label_7 = QLabel(self.layoutWidget1)
+        self.label_7 = QLabel(self.layoutWidget2)
         self.label_7.setObjectName(u"label_7")
         self.label_7.setAlignment(Qt.AlignCenter)
 
         self.verticalLayout_6.addWidget(self.label_7)
 
-        self.listWidget_2 = QListWidget(self.layoutWidget1)
+        self.listWidget_2 = QListWidget(self.layoutWidget2)
         self.listWidget_2.setObjectName(u"listWidget_2")
 
         self.verticalLayout_6.addWidget(self.listWidget_2)
 
         self.horizontalLayout_3 = QHBoxLayout()
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
-        self.pushButton_5 = QPushButton(self.layoutWidget1)
+        self.pushButton_5 = QPushButton(self.layoutWidget2)
         self.pushButton_5.setObjectName(u"pushButton_5")
 
         self.horizontalLayout_3.addWidget(self.pushButton_5)
 
-        self.pushButton_6 = QPushButton(self.layoutWidget1)
+        self.pushButton_6 = QPushButton(self.layoutWidget2)
         self.pushButton_6.setObjectName(u"pushButton_6")
 
         self.horizontalLayout_3.addWidget(self.pushButton_6)
@@ -219,6 +219,98 @@ class Ui_mainWindow(object):
         self.verticalLayout_6.addLayout(self.horizontalLayout_3)
 
         self.stackedWidget.addWidget(self.page_3)
+        self.page_4 = QWidget()
+        self.page_4.setObjectName(u"page_4")
+        self.pushButton_9 = QPushButton(self.page_4)
+        self.pushButton_9.setObjectName(u"pushButton_9")
+        self.pushButton_9.setGeometry(QRect(380, 230, 91, 24))
+        self.layoutWidget3 = QWidget(self.page_4)
+        self.layoutWidget3.setObjectName(u"layoutWidget3")
+        self.layoutWidget3.setGeometry(QRect(240, 40, 371, 178))
+        self.horizontalLayout_4 = QHBoxLayout(self.layoutWidget3)
+        self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
+        self.horizontalLayout_4.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_5 = QVBoxLayout()
+        self.verticalLayout_5.setObjectName(u"verticalLayout_5")
+        self.verticalLayout_5.setContentsMargins(10, -1, 10, -1)
+        self.label_9 = QLabel(self.layoutWidget3)
+        self.label_9.setObjectName(u"label_9")
+        self.label_9.setAlignment(Qt.AlignCenter)
+
+        self.verticalLayout_5.addWidget(self.label_9)
+
+        self.label_10 = QLabel(self.layoutWidget3)
+        self.label_10.setObjectName(u"label_10")
+        self.label_10.setAlignment(Qt.AlignCenter)
+
+        self.verticalLayout_5.addWidget(self.label_10)
+
+        self.label_11 = QLabel(self.layoutWidget3)
+        self.label_11.setObjectName(u"label_11")
+        self.label_11.setAlignment(Qt.AlignCenter)
+
+        self.verticalLayout_5.addWidget(self.label_11)
+
+        self.label_8 = QLabel(self.layoutWidget3)
+        self.label_8.setObjectName(u"label_8")
+        self.label_8.setAlignment(Qt.AlignCenter)
+
+        self.verticalLayout_5.addWidget(self.label_8)
+
+        self.label_12 = QLabel(self.layoutWidget3)
+        self.label_12.setObjectName(u"label_12")
+        self.label_12.setAlignment(Qt.AlignCenter)
+
+        self.verticalLayout_5.addWidget(self.label_12)
+
+        self.label_13 = QLabel(self.layoutWidget3)
+        self.label_13.setObjectName(u"label_13")
+        self.label_13.setAlignment(Qt.AlignCenter)
+
+        self.verticalLayout_5.addWidget(self.label_13)
+
+
+        self.horizontalLayout_4.addLayout(self.verticalLayout_5)
+
+        self.verticalLayout_8 = QVBoxLayout()
+        self.verticalLayout_8.setObjectName(u"verticalLayout_8")
+        self.lineEdit_3 = QLineEdit(self.layoutWidget3)
+        self.lineEdit_3.setObjectName(u"lineEdit_3")
+
+        self.verticalLayout_8.addWidget(self.lineEdit_3)
+
+        self.lineEdit_4 = QLineEdit(self.layoutWidget3)
+        self.lineEdit_4.setObjectName(u"lineEdit_4")
+
+        self.verticalLayout_8.addWidget(self.lineEdit_4)
+
+        self.lineEdit_5 = QLineEdit(self.layoutWidget3)
+        self.lineEdit_5.setObjectName(u"lineEdit_5")
+
+        self.verticalLayout_8.addWidget(self.lineEdit_5)
+
+        self.lineEdit_6 = QLineEdit(self.layoutWidget3)
+        self.lineEdit_6.setObjectName(u"lineEdit_6")
+
+        self.verticalLayout_8.addWidget(self.lineEdit_6)
+
+        self.lineEdit_7 = QLineEdit(self.layoutWidget3)
+        self.lineEdit_7.setObjectName(u"lineEdit_7")
+
+        self.verticalLayout_8.addWidget(self.lineEdit_7)
+
+        self.lineEdit_8 = QLineEdit(self.layoutWidget3)
+        self.lineEdit_8.setObjectName(u"lineEdit_8")
+
+        self.verticalLayout_8.addWidget(self.lineEdit_8)
+
+
+        self.horizontalLayout_4.addLayout(self.verticalLayout_8)
+
+        self.pushButton_10 = QPushButton(self.page_4)
+        self.pushButton_10.setObjectName(u"pushButton_10")
+        self.pushButton_10.setGeometry(QRect(389, 260, 71, 24))
+        self.stackedWidget.addWidget(self.page_4)
         mainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(mainWindow)
         self.menubar.setObjectName(u"menubar")
@@ -232,12 +324,11 @@ class Ui_mainWindow(object):
 
         self.stackedWidget.setCurrentIndex(0)
 
-
         QMetaObject.connectSlotsByName(mainWindow)
     # setupUi
 
     def retranslateUi(self, mainWindow):
-        mainWindow.setWindowTitle(QCoreApplication.translate("mainWindow", u"Parking Reservation App", None))
+        mainWindow.setWindowTitle(QCoreApplication.translate("mainWindow", u"MainWindow", None))
         self.label.setText(QCoreApplication.translate("mainWindow", u"Username", None))
         self.label_2.setText(QCoreApplication.translate("mainWindow", u"Password", None))
         self.pushButton_2.setText(QCoreApplication.translate("mainWindow", u"Login", None))
@@ -253,5 +344,13 @@ class Ui_mainWindow(object):
         self.label_7.setText(QCoreApplication.translate("mainWindow", u"Your reservations", None))
         self.pushButton_5.setText(QCoreApplication.translate("mainWindow", u"Back", None))
         self.pushButton_6.setText(QCoreApplication.translate("mainWindow", u"Cancel reservation", None))
+        self.pushButton_9.setText(QCoreApplication.translate("mainWindow", u"Register", None))
+        self.label_9.setText(QCoreApplication.translate("mainWindow", u"First name:", None))
+        self.label_10.setText(QCoreApplication.translate("mainWindow", u"Last name:", None))
+        self.label_11.setText(QCoreApplication.translate("mainWindow", u"Email address:", None))
+        self.label_8.setText(QCoreApplication.translate("mainWindow", u"Username:", None))
+        self.label_12.setText(QCoreApplication.translate("mainWindow", u"Password:", None))
+        self.label_13.setText(QCoreApplication.translate("mainWindow", u"Confirm password:", None))
+        self.pushButton_10.setText(QCoreApplication.translate("mainWindow", u"Back", None))
     # retranslateUi
 
