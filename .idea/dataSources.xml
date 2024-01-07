@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="parking" uuid="03f7fde0-26a7-4e12-8dc8-b1c042e3b600">
+    <data-source source="LOCAL" name="parking" uuid="dc79283c-d7ac-40e4-843f-c733d6e7e927">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:C:\Users\galat\Desktop\proiectBD\parking.db</jdbc-url>
+      <jdbc-url>jdbc:sqlite:C:\Users\galat\Desktop\proiectBD\Tema-de-casa-BD\parking.db</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
       <libraries>
         <library>

@@ -120,6 +120,11 @@ class MainWindow(QMainWindow):
         # Hash the entered password before storing
         hashed_password = self.hash_password(self.ui.lineEdit.text())
 
+        if hashed_password is None or not hashed_password.strip():
+            QMessageBox.warning(self, "Registration Failed", "Password cannot be blank.")
+            conn.close()
+            return
+
         try:
             # Insert the new user into the 'users' table with hashed password
             cursor.execute("INSERT INTO users (username, password) VALUES (?, ?)", (username, hashed_password))
@@ -198,6 +203,9 @@ class MainWindow(QMainWindow):
             cursor = conn.cursor()
 
             try:
+                # Begin the transaction
+                conn.execute("BEGIN")
+
                 # Insert the reservation into the 'reservations' table
                 cursor.execute("""
                         INSERT INTO reservations (user_id, parking_number, checkin_date, checkin_hour, checkout_date, checkout_hour)
@@ -210,19 +218,26 @@ class MainWindow(QMainWindow):
 
                 # Insert the reservation into the 'history' table
                 cursor.execute("""
-                        INSERT INTO history (reservation_date_and_time, user_id, check_in_date, check_in_hour, check_out_date, check_out_hour)
-                        VALUES (?, ?, ?, ?, ?, ?)
-                    """, (reservation_date_and_time, user_id, checkin_date, checkin_hour, checkout_date, checkout_hour))
+                                        INSERT INTO history (reservation_date_and_time, user_id, check_in_date, check_in_hour, check_out_date, check_out_hour)
+                                        VALUES (?, ?, ?, ?, ?, ?)
+                                    """, (
+                reservation_date_and_time, user_id, checkin_date, checkin_hour, checkout_date, checkout_hour))
 
-                conn.commit()
-                conn.close()
+                # Commit the transaction
+                conn.execute("COMMIT")
 
                 QMessageBox.information(self, "Reservation", "Parking spot reserved successfully.")
             except sqlite3.IntegrityError as e:
                 # Extract the error message raised by the database
                 error_message = str(e)
+
+                # Rollback the transaction in case of an error
+                conn.execute("ROLLBACK")
+
                 # Display the error message in a QMessageBox
                 QMessageBox.warning(self, "Reservation Failed", error_message)
+            finally:
+                conn.close()
         else:
             QMessageBox.warning(self, "Reservation Failed", "Please select a parking spot from the list.")
 
@@ -314,8 +329,11 @@ class MainWindow(QMainWindow):
 
     def hash_password(self, password):
         # Use SHA-256 for password hashing
-        hashed_password = hashlib.sha256(password.encode()).hexdigest()
-        return hashed_password
+        if(password):
+            hashed_password = hashlib.sha256(password.encode()).hexdigest()
+            return hashed_password
+        else:
+            return None
 
 
 
@@ -332,6 +350,27 @@ if __name__ == "__main__":
             password TEXT NOT NULL
         )
     """)
+
+    cursor.execute("""
+            CREATE TABLE IF NOT EXISTS user_details (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                first_name TEXT NOT NULL,
+                last_name TEXT NOT NULL,
+                email_address TEXT NOT NULL
+            )
+        """)
+
+    cursor.execute("""
+            CREATE TABLE IF NOT EXISTS history (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                reservation_date_and_time DATETIME,
+                user_id INTEGER,
+                check_in_date DATE,
+                check_in_hour TIME,
+                check_out_date DATE,
+                check_out_hour TIME
+            )
+        """)
 
     # Check if the 'parking' table exists
     cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='parking'")
@@ -404,18 +443,6 @@ if __name__ == "__main__":
                 SELECT RAISE(FAIL, 'Check-in hour must be greater than current hour');
             END;
         """)
-
-    cursor.execute("""
-        CREATE TABLE IF NOT EXISTS history (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            reservation_date_and_time DATETIME,
-            user_id INTEGER,
-            check_in_date DATE,
-            check_in_hour TIME,
-            check_out_date DATE,
-            check_out_hour TIME
-        )
-    """)
 
     cursor.execute("""
         CREATE TRIGGER IF NOT EXISTS check_overlap_constraint
